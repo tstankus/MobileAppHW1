@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Our first responsive web page with HTML5 and CSS3</title>
+</head>
+<Style>
+
+    #title {
+        font-weight: bold;
+        font-size: 18pt;
+    }
+
+    #title-description {
+        font-size: 12pt;
+        color: #554aff;
+    }
+
+    #totals {
+        font-weight: bold;
+        height: 85px;
+    }
+
+    table {
+        background-color: darkgray;
+    }
+
+    body {
+        background-color: cadetblue
+    }
+
+    img {
+        height: 40px;
+        width: 40px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    td {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    footer {
+        font-size: 10pt;
+        color: red;
+    }
+
+    input {
+        width: 95%;
+    }
+
+</Style>
+<body>
+<span id="title">Clash Calculator</span> <span id="title-description">- Enter Max Slots and the numbers of each troop type</span>
+<table border='1' oninput="calculate()">
+    <tr>
+        <th> Character</th>
+        <th> Slots Needed</th>
+        <th> Elixir Needed</th>
+        <th> Dark Elixir Needed</th>
+        <th>Numb</th>
+    </tr>
+    <tr>
+        <td><img src='img/giant.gif'></td>
+        <td>5</td>
+        <td>3000</td>
+        <td>0</td>
+        <td><input id="giant" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <!--  <tr>
+          <td><img src='img/healer.gif'></td>
+          <td>14</td>
+          <td>10000</td>
+          <td>0</td>
+          <td><input id="healer" type="number" name="healer" min="1" max="30" size='3'></td>
+      </tr>-->
+    <tr>
+        <td><img src='img/barb.gif'></td>
+        <td>1</td>
+        <td>200</td>
+        <td>0</td>
+        <td><input id="barb" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/arch.gif'></td>
+        <td>1</td>
+        <td>400</td>
+        <td>0</td>
+        <td><input id="arch" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/goblin.gif'></td>
+        <td>1</td>
+        <td>100</td>
+        <td>0</td>
+        <td><input id="goblin" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/wizard.gif'></td>
+        <td>4</td>
+        <td>3500</td>
+        <td>0</td>
+        <td><input id="wizard" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/bomber.gif'></td>
+        <td>2</td>
+        <td>3000</td>
+        <td>0</td>
+        <td><input id="bomber" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/healer.gif'></td>
+        <td>14</td>
+        <td>10000</td>
+        <td>0</td>
+        <td><input id="healer" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/pekka.gif'></td>
+        <td>25</td>
+        <td>32000</td>
+        <td>0</td>
+        <td><input id="pekka" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/balloon.gif'></td>
+        <td>5</td>
+        <td>3500</td>
+        <td>0</td>
+        <td><input id="balloon" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/dragon.gif'></td>
+        <td>20</td>
+        <td>33000</td>
+        <td>0</td>
+        <td><input id="dragon" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/minnion.gif'></td>
+        <td>2</td>
+        <td>0</td>
+        <td>10</td>
+        <td><input id="minion" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/hogs.gif'></td>
+        <td>5</td>
+        <td>0</td>
+        <td>65</td>
+        <td><input id="hog" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/lava.gif'></td>
+        <td>30</td>
+        <td>0</td>
+        <td>390</td>
+        <td><input id="lava" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/witch.gif'></td>
+        <td>8</td>
+        <td>0</td>
+        <td>250</td>
+        <td><input id="witch" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr>
+        <td><img src='img/gollum.gif'></td>
+        <td>30</td>
+        <td>0</td>
+        <td>450</td>
+        <td><input id="gollum" type="number" name="healer" min="1" max="30" size='3'></td>
+    </tr>
+    <tr id="totals">
+        <td><img src='img/total.gif'></td>
+        <td>Max Slots<br/><input onchange="calculate()" id="max-slots" type="number" name="max" min="1" max="250"
+                                 size='3' maxlength="3" value="220">
+        </td>
+        <td>Total Elixir <br><span id="total-elixirs">0</span></td>
+        <td>Total Dark <br/><span id="total-dark-elixirs">0</span></td>
+        <td >Total Slots<br/><span id="total-slots">0</span></td>
+    </tr>
+</table>
+<footer>
+    Designed by: T.J. Stankus
+</footer>
+</body>
+<script src="js/clash-of-clan-calculator.js"></script>
+</html>
