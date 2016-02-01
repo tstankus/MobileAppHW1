@@ -1,14 +1,13 @@
 /**
  * Created by T.J on 1/22/2016.
  */
-var tempCharacterArray;
+
+var tempCharacterArray; //temp array to store previous calculations
+var tempMaxSlots; //temp variable to store previous max slots value
 
 //constructor for the creating a character object
 var Character = function (characterType, slotsNeeded, elixirsNeeded, darkElixirsNeeded) {
     this.characterType = characterType;
-    this.slotsNeeded = slotsNeeded;
-    this.elixirsNeeded = elixirsNeeded;
-    this.darkElixirsNeeded = darkElixirsNeeded;
     this.totalNumberOfUnits = document.getElementById(characterType).value;
     this.totalSlotsNeeded = this.totalNumberOfUnits * slotsNeeded;
     this.totalElixirsNeeded = this.totalNumberOfUnits * elixirsNeeded;
@@ -16,8 +15,8 @@ var Character = function (characterType, slotsNeeded, elixirsNeeded, darkElixirs
 
 };
 
-function calculate() {
-
+//creates all the character objects
+function createCharacters() {
     var giant = new Character("giant", 5, 3000, 0);
     var healer = new Character("healer", 14, 10000, 0);
     var barb = new Character("barb", 1, 200, 0);
@@ -33,58 +32,32 @@ function calculate() {
     var lava = new Character("lava", 30, 0, 390);
     var witch = new Character("witch", 8, 0, 250);
     var gollum = new Character("gollum", 30, 0, 450);
-    var characterArray = [
-        giant, healer, barb, arch, goblin, wizard, bomber, pekka, balloon, dragon, minion, hog,
+
+    return [giant, healer, barb, arch, goblin, wizard, bomber, pekka, balloon, dragon, minion, hog,
         lava, witch, gollum];
+}
 
+function initialize() {
 
-    //console.log("temp array:" + tempCharacterArray.toString() + "\nchar array" + characterArray.toString());
-
+    var characterArray = createCharacters();
+    var totalSlots = calculateTotalSlots(characterArray);
     var maxSlots = document.getElementById("max-slots").value;
-    var totalSlots = characterArray.reduce(function (a, b) {
-        return a + b.totalSlotsNeeded
-    }, 0);
-    var totalElixirs = characterArray.reduce(function (a, b) {
-        return a + b.totalElixirsNeeded
-    }, 0);
-    var totalDarkElixirs = characterArray.reduce(function (a, b) {
-        return a + b.totalDarkElixirsNeeded
-    }, 0);
-
-    document.getElementById("total-slots").innerHTML = totalSlots;
-    document.getElementById("total-dark-elixirs").innerHTML = totalDarkElixirs;
-    document.getElementById("total-elixirs").innerHTML = totalElixirs;
-
-
-    /*
-     console.log("total elixirs sum: " + characterArray.reduce(function (a, b) {
-     return a + b.totalSlotsNeeded
-     }, 0));
-     */
-    //window.alert(Object.keys(giant).map(function (key){return giant[key]}));
-    // window.alert(document.getElementById("giant").value);
     validate(maxSlots, totalSlots, characterArray);
-
-
 }
 
 //validates user input
 function validate(maxSlots, totalSlots, characterArray) {
-    this.maxSlots = maxSlots;
-    this.totalSlots = totalSlots;
-    this.characterArray = characterArray;
     var message = "";
     var checkValid = true;
 
-
     if (maxSlots > 250 || maxSlots < 0) {
         checkValid = false;
-        message += "</br>Max Slots must be less than or equal to 250";
+        message = "\nMax Slots must be positive and less than or equal to 250 ";
     }
 
     if (totalSlots > maxSlots) {
         checkValid = false;
-        message += "</br>Total slots must not be greater than  max slots";
+        message = "\nTotal slots must not be greater than max slots";
     }
 
     //checks if the user input a negative value for the number of units
@@ -92,53 +65,50 @@ function validate(maxSlots, totalSlots, characterArray) {
             return e.totalNumberOfUnits < 0;
         })) {
         checkValid = false;
-        message += "</br>Number of units must not be negative"
+        message = "\nNumber of units must not be negative"
     }
 
     //updates the DOM based on if the checkValid flag is true or false
+    //also alerts the user of any errors and reverts input to previous value if the user input fails validation
     if (checkValid === false) {
-
         characterArray = tempCharacterArray.slice();
-        document.getElementById("total-slots").innerHTML = totalSlots + message;
-        document.getElementById("totals").style.color = "red";
-        document.getElementById("max-slots").style.color = "red";
+        maxSlots = tempMaxSlots;
+        //generates error message
+        alert(message);
 
-       /* document.getElementById(characterArray[7].characterType).value =
-            characterArray[7].totalNumberOfUnits;
-        console.log("False:\ntemp: " + tempCharacterArray[7].totalNumberOfUnits);
-        console.log("char: " + characterArray[7].totalNumberOfUnits);*/
+        //reverts user input to previously entered value
+        characterArray.forEach(function (e) {
+            document.getElementById(e.characterType).value = e.totalNumberOfUnits;
+        });
 
-        for (var i = 0; i < characterArray.length; i++) {
-            document.getElementById(characterArray[i].characterType).value =
-                characterArray[i].totalNumberOfUnits;
-            console.log(characterArray[i].totalNumberOfUnits)
-        }
-        //validateCharacters(characterArray);
+        document.getElementById("max-slots").value = maxSlots;
+        //updates totals after user input was reverted
+        calculateTotals(characterArray);
     }
     else {
         tempCharacterArray = characterArray.slice();
-        document.getElementById("total-slots").innerHTML = totalSlots;
-        document.getElementById("totals").style.color = "black";
-        document.getElementById("max-slots").style.color = "black";
-
-        /*characterArray.forEach(function (e) {
-            document.getElementById(e.characterType).defaultValue = e.totalNumberOfUnits;
-            console.log(e.characterType + " total slots: " + e.totalNumberOfUnits);
-        });*/
-        console.log("True:\ntemp: " + tempCharacterArray[7].totalNumberOfUnits);
-        console.log("char: " + characterArray[7].totalNumberOfUnits);
+        tempMaxSlots = maxSlots;
+        calculateTotals(characterArray);
     }
+}
 
+//calculates the totals for elixirs, dark elixirs, and slots
+function calculateTotals(characterArray) {
+    var totalElixirs = characterArray.reduce(function (a, b) {
+        return a + b.totalElixirsNeeded
+    }, 0);
+
+    var totalDarkElixirs = characterArray.reduce(function (a, b) {
+        return a + b.totalDarkElixirsNeeded
+    }, 0);
+
+    document.getElementById("total-slots").innerHTML = calculateTotalSlots(characterArray);
+    console.log(document.getElementById("total-elixirs").innerHTML = totalElixirs);
+    console.log(document.getElementById("total-dark-elixirs").innerHTML = totalDarkElixirs);
 }
-function characterID(characterArray) {
-    this.characterArray = characterArray;
-    return characterArray.forEach(function (e) {
-        console.log(e.characterType)
-    });
-}
-function validateCharacters(characterArray) {
-    this.characterArray = characterArray;
-    characterArray.forEach(function (e) {
-        document.getElementById(e.characterType).value = e.totalNumberOfUnits
-    })
+
+function calculateTotalSlots(characterArray) {
+    return characterArray.reduce(function (a, b) {
+        return a + b.totalSlotsNeeded
+    }, 0);
 }
